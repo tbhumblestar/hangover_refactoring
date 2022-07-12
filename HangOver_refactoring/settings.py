@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     #apps
+    'core',
     'users',
     
     #third
@@ -170,5 +171,5 @@ SIMPLE_JWT = {
     # 'ROTATE_REFRESH_TOKENS': True,
 }
 
-# AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.CustomUser'
 # AUTH_USER_MODEL = 'core.User'
