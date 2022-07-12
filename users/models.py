@@ -1,12 +1,11 @@
-from django.db   import models
-from core.models import TimeStampedModel
+# from django.db                  import models
+# # from core.models                    import TimeStampedModel
+# from django.contrib.auth.models     import PermissionsMixin
+# from django.contrib.auth.base_user import AbstractBaseUser
 
-class User(TimeStampedModel):
-    kakao_id                   = models.PositiveBigIntegerField(unique=True)
-    nickname                   = models.CharField(max_length=50)
-    profile_image_url          = models.CharField(max_length=200,null=True)
-    profile_image_storage_path = models.CharField(max_length=200,null=True)
-    email                      = models.CharField(max_length=150,null=True)
 
-    class Meta:
-        db_table = 'users'
+# class CustomUser(AbstractBaseUser):
+#     pass
+
+#     class Meta:
+#         db_table = 'users'

@@ -169,3 +169,6 @@ SIMPLE_JWT = {
     # 'REFRESH_TOKEN_LIFETIME': timedelta(days=60),
     # 'ROTATE_REFRESH_TOKENS': True,
 }
+
+# AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'core.User'
