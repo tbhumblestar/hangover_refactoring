@@ -53,41 +53,7 @@ for i,v in enumerate(origins):
 for i,v in enumerate(prices):
     print(f"{i}.",v.text)
 
-# print(elems[78].text)
-# print(elems_img[39].get_attribute("style"))
-
-
-# print(elems[102].text)
-# print(elems_img[51].get_attribute("style"))
-
-
-# print(elems[90].text)
-# print(elems_img[45].get_attribute("style"))
-
-
-# print(elems[394].text)
-# print(elems_img[197].get_attribute("style"))
-
 time.sleep(1000)
-
-# driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-# time.sleep(5)
-
-# elems = driver.find_elements(By.CSS_SELECTOR,'div.wineInfoVintage__truncate--3QAtw')
-# print(len(elems))
-
-# elems_img = driver.find_elements(By.XPATH,"//div[@role='img']")
-# print(len(elems_img))
-
-# driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
-# time.sleep(5)
-
-# elems = driver.find_elements(By.CSS_SELECTOR,'div.wineInfoVintage__truncate--3QAtw')
-# print(len(elems))
-
-# elems_img = driver.find_elements(By.XPATH,"//div[@role='img']")
-# print(len(elems_img))
-
 time.sleep(1000)
 
 # elems = driver.find_elements(By.CSS_SELECTOR,'div.wineInfoVintage__truncate--3QAtw')
