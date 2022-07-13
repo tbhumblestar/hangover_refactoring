@@ -10,7 +10,7 @@ class CustomUserManager(BaseUserManager):
     
     use_in_migrations = True
     
-    def _create_user(self,email,password,**extra_fields):
+    def _create_user(self,email,password=None,**extra_fields):
         if not email:
             raise ValueError('email must be set')
         if not password:
@@ -21,7 +21,7 @@ class CustomUserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         
-    def create_user(self,email,password,**extra_fields):
+    def create_user(self,email,password=None,**extra_fields):
         extra_fields.setdefault('is_superuser',False)
         return self._create_user(email,password,**extra_fields)
 
@@ -40,8 +40,15 @@ class CustomUserManager(BaseUserManager):
 
 
 
-class CustomUser(AbstractBaseUser,PermissionsMixin,TimeStampedModel):
+class User(AbstractBaseUser,PermissionsMixin,TimeStampedModel):
+    
+    login_type = (
+        ('KakaoLogin','KakaoLogin'),
+        ('SiteLogin','SiteLogin')
+    )
+
     email                      = models.EmailField('email adress',unique=True,max_length=100)
+    login_type                 = models.CharField('login_type',max_length=30,choices=login_type)
     nickname                   = models.CharField('nickname',max_length=30,null=True)
     username                   = models.CharField('username',max_length=30,null=True)
     contact_num                = models.CharField('contact_num',max_length=50,null=True)
@@ -59,7 +66,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin,TimeStampedModel):
     objects                    = CustomUserManager()
     
     def __str__(self):
-        return f'{self.email()}({self.nickname})'
+        return f"{self.email}(nickname : {self.nickname})"
     
     class Meta:
         db_table = 'users'
