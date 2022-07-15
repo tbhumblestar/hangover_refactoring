@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     #apps
     'core',
     'users',
+    'products',
     
     #third
     'rest_framework',

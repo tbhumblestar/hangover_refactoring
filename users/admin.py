@@ -1,10 +1,14 @@
-# # https://swarf00.github.io/2018/12/07/registration.html
+# https://swarf00.github.io/2018/12/07/registration.html
 
-# # from django.contrib import admin
-# # from .models import User
-
-# from django.contrib.auth import get_user_model
 # from django.contrib import admin
+# from .models import User
+
+from django.contrib.auth import get_user_model
+from django.contrib import admin
+from django.contrib.auth.models import Group
+
+admin.site.unregister(Group)
+admin.site.register(get_user_model())
 
 # @admin.register(get_user_model())
 # class UserAdmin(admin.ModelAdmin):

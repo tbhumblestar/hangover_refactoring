@@ -12,18 +12,22 @@
     - Pagination, Throttle
     - 디테일페이지 : 리뷰 좋아요 및 주류 정보
     - TestCode
+    - ORM 최적화(?)까지는 아니여도 최대한..
 
-## 적용해보고 싶은 부분
+## (추가)적용해보고 싶은 부분
     - Redis
-    - Nginx, Gunicorn
+    - Nginx, Gunicorn(WSGI)
     - Docker
     - (가능한)객체지향적인 코드..
 
 ## 일정
 #### 7/4~7/11
-    - selenium, scrapy를 사용한 데이터 적재
+    - selenium, scrapy 공부..
     - Product 데이터 속성 결정
-    - 카카오 기반 소셜로그인 구현
+    - Custom user Model
+    
 #### 7/12~7/19
+    - 데이터 속성 결정 및 데이터 적재
+    - 카카오 기반 소셜로그인 구현
     - Product List View : GenericView적용 / filter / pagination
     - TestCode : ProductListView / KaoKaoLogin,Logout
