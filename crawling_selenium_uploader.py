@@ -42,18 +42,19 @@ URL_by_Category = {
 
 Product_list=[]
 
-#FOR문으로 돌리면 크롤링을 막아버림 비비노 사이트에서
+#FOR문으로 돌리면 크롤링을 막아버림 비비노 사이트에서.. 그래서 일일이 해주는 수밖에 없다.
+#나중에 button.click()과 같은 방식을 한번 생각해보는 것도 낫벳 > 실패.. 안됨
 key = 1
-value = "https://www.vivino.com/explore?e=eJzLLbI1VMvNzLM1UMtNrLA1NQABteRKW-8gtWQgEa5WAFSQnmZblliUmVqSmKOWX5Rim5JanKyWn1RpW5RYkpmXXhyfnF-aV6JWXhIda2sIAEepG8A%3D"
+value = URL_by_Category[key]
 
 
 #start crwaling
 driver.get(value)
 
 #wait for loading 
-time.sleep(15)
+time.sleep(7)
 
-for i in range(1,300):
+for i in range(1,350):
     time.sleep(1.5)
     driver.execute_script(f"window.scrollTo(0, {i*800})")
 # driver.execute_script("window.scrollTo(0, document.body.scrollHeight)")
@@ -90,6 +91,10 @@ print(f"{key} finished!")
     
 Product.objects.bulk_create(Product_list)
 
+
+
+
+##for test --------------------------------
 
 # print("-----------------------------------------------------------")
 # print("title!")
