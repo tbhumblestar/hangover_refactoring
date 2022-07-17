@@ -10,4 +10,5 @@ class ProductListFilter(filters.FilterSet):
             'rating':['lt','gt'],
             'category__name':['iexact'],
             'name':['icontains'],
+            'origin__name':['iexact']
         }

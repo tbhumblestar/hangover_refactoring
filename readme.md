@@ -28,6 +28,6 @@
     
 #### 7/12~7/19
     - 데이터 속성 결정 및 데이터 적재
-    - 카카오 기반 소셜로그인 구현
-    - Product List View : GenericView적용 / filter / pagination
-    - TestCode : ProductListView / KaoKaoLogin,Logout
+    - 카카오 기반 소셜로그인/로그아웃 구현
+    - Product List View : GenericView적용 / filter /pagination/
+    - dyanamic field filtering
