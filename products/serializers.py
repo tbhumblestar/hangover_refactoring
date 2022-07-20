@@ -8,8 +8,11 @@ class ProductSerializer(serializers.ModelSerializer):
     origin = serializers.CharField(source='origin.name',read_only=True)
     
     def __init__(self,*args,**kwargs):
+        print(kwargs)
         fields = kwargs.pop('fields',None)
         super().__init__(*args,**kwargs)
+        
+        print("self.fields : ",self.fields)
         
         if fields:
             allowed = set(fields)
