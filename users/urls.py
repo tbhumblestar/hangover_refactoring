@@ -1,9 +1,12 @@
-from django.urls import path
-from products.views import WishlistUserListView
-from .views      import (
+from django.urls    import path
+from products.views import (
+                        WishlistUserListView,
+                        ReviewUserListView,
+                    )
+from .views         import (
                         KaKaoLoginView,
                         KaKaoLogOutView,
-                        UserDetailView
+                        UserDetailView,
                     )
 
 urlpatterns = [
@@ -12,4 +15,5 @@ urlpatterns = [
     path('kakaologout',KaKaoLogOutView.as_view(),name='kakaologout'),
     path('<int:user_id>',UserDetailView.as_view(),name='UserDetail'),
     path('<int:user_id>/wishlists',WishlistUserListView.as_view(),name='UserWishlists'),
+    path('<int:user_id>/reviews',ReviewUserListView.as_view(),name='UserReviews'),
 ]

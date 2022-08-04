@@ -1,6 +1,11 @@
-from rest_framework import serializers
-from .models        import Product
-from .models        import WishList
+from django.forms        import ValidationError
+from rest_framework          import serializers
+from rest_framework.response import Response
+
+from .models        import (Product,
+                            WishList,
+                            Review,
+)
 
 class ProductSerializer(serializers.ModelSerializer):
     
@@ -9,11 +14,8 @@ class ProductSerializer(serializers.ModelSerializer):
     origin = serializers.CharField(source='origin.name',read_only=True)
     
     def __init__(self,*args,**kwargs):
-        print(kwargs)
         fields = kwargs.pop('fields',None)
         super().__init__(*args,**kwargs)
-        
-        print("self.fields : ",self.fields)
         
         if fields:
             allowed = set(fields)
@@ -31,4 +33,34 @@ class WishlistSerializer(serializers.ModelSerializer):
         class Meta:
             model = WishList
             exclude = ['user']
+
+        def create(self,validated_data):
+            
+            if WishList.objects.filter(**validated_data):
+                raise serializers.ValidationError("Error : Already registered on wishlist") 
+            
+            wishlist = WishList.objects.create(**validated_data)        
+            
+            return wishlist
+        
+
+class ReviewSerializer(serializers.ModelSerializer):
+    
+        class Meta:
+            model = Review
+            exclude = ['user']
+
+        def create(self,validated_data):
+            
+            check_data = {
+                "user":validated_data.get('user'),
+                "product":validated_data.get('product')
+            }
+            
+            if Review.objects.filter(**check_data):
+                raise serializers.ValidationError("Error : This user already wrote review for the product") 
+            
+            review = Review.objects.create(**validated_data)        
+            
+            return review
             

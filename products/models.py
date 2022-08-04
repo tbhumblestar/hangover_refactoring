@@ -41,16 +41,16 @@ class Origin(models.Model):
         
 
 class WishList(TimeStampedModel):
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    user    = models.ForeignKey(User,on_delete=models.CASCADE)
     product = models.ForeignKey("products.Product",on_delete=models.CASCADE)
     
     def __str__(self):
         return f"{self.user.nickname} : {self.product.name}"
+
+class Review(TimeStampedModel):
+    user    = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey("products.Product",on_delete=models.CASCADE)
+    content = models.TextField()
     
-    class Meta:
-        db_table = 'wishlists'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['user', 'product'],
-                name='user_product_unique_constraint')
-        ]
+    def __str__(self):
+        return f"{self.user.nickname} : {self.product.name}"

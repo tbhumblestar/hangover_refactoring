@@ -4,15 +4,18 @@ from rest_framework.response    import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework             import status
 from .models                    import (Product,
-                                        WishList
+                                        WishList,
+                                        Review
                                         )
+
 from django.shortcuts           import get_object_or_404
 from django_filters             import rest_framework as filters
 from core.paginations           import PagePagination
 from core.filters               import ProductListFilter
 from core.permissions           import DetailPermissionGetOrOnlyAdminOrOnlyWriter
 from .serializers               import (ProductSerializer,
-                                        WishlistSerializer
+                                        WishlistSerializer,
+                                        ReviewSerializer
                                         )
 
 
@@ -58,11 +61,10 @@ class WishlistCreateView(generics.CreateAPIView):
         data = {
             "product" : self.kwargs.get('product_id'),
         }
-        
+
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save(user=self.request.user)
-        
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
@@ -78,5 +80,42 @@ class WishlistUserListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class   = WishlistSerializer
     queryset           = WishList.objects.all()
+    lookup_url_kwarg  = 'user_id'
+    lookup_field      = 'id'
+    
+
+class ReviewCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class   = ReviewSerializer
+    
+    def create(self, request, *args, **kwargs):
+        
+        request.data['product'] = self.kwargs.get('product_id')
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        self.perform_create(serializer)
+        
+        headers = self.get_success_headers(serializer.data)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(user=user)
+
+class ReviewdetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [DetailPermissionGetOrOnlyAdminOrOnlyWriter]
+    serializer_class   = ReviewSerializer
+    queryset           = Review.objects.all()
+    lookup_url_kwarg  = 'review_id'
+    lookup_field      = 'id'
+    
+
+class ReviewUserListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class   = ReviewSerializer
+    queryset           = Review.objects.all()
     lookup_url_kwarg  = 'user_id'
     lookup_field      = 'id'
