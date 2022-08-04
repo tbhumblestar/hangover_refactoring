@@ -1,14 +1,20 @@
-from rest_framework          import generics
-from rest_framework.filters  import OrderingFilter
-from rest_framework.response import Response
-from .models                 import Product
-from .serializers            import ProductSerializer
-from django_filters          import rest_framework as filters
-from core.paginations        import PagePagination
-from core.filters            import ProductListFilter
-from django.shortcuts        import get_object_or_404
+from rest_framework             import generics
+from rest_framework.filters     import OrderingFilter
+from rest_framework.response    import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework             import status
+from .models                    import (Product,
+                                        WishList
+                                        )
+from django.shortcuts           import get_object_or_404
+from django_filters             import rest_framework as filters
+from core.paginations           import PagePagination
+from core.filters               import ProductListFilter
+from core.permissions           import DetailPermissionGetOrOnlyAdminOrOnlyWriter
+from .serializers               import (ProductSerializer,
+                                        WishlistSerializer
+                                        )
 
-# Create your views here.
 
 class ProductListAPIView(generics.ListAPIView):
     pagination_class = PagePagination
@@ -34,3 +40,43 @@ class ProductListAPIView(generics.ListAPIView):
         
         serializer = self.get_serializer(queryset, many=True,fields=fields)
         return Response(serializer.data)
+
+
+class ProductDetailView(generics.RetrieveAPIView):
+    queryset          = Product.objects.all()
+    serializer_class  = ProductSerializer
+    lookup_url_kwarg  = 'product_id'
+    lookup_field      = 'id'
+
+    
+class WishlistCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class   = WishlistSerializer
+    
+    def create(self, request, *args, **kwargs):
+        
+        data = {
+            "product" : self.kwargs.get('product_id'),
+        }
+        
+        serializer = self.get_serializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=self.request.user)
+        
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+class WishlistDestroyView(generics.DestroyAPIView):
+    permission_classes = [DetailPermissionGetOrOnlyAdminOrOnlyWriter]
+    serializer_class   = WishlistSerializer
+    queryset           = WishList.objects.all()
+    lookup_url_kwarg  = 'wishlist_id'
+    lookup_field      = 'id'
+    
+
+class WishlistUserListView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class   = WishlistSerializer
+    queryset           = WishList.objects.all()
+    lookup_url_kwarg  = 'user_id'
+    lookup_field      = 'id'

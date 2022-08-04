@@ -149,7 +149,7 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     #for test
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=10),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
     
     #유저속성 중 jwt에 들어갈 필드
     'USER_ID_FIELD': 'id',

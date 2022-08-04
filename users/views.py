@@ -5,8 +5,12 @@ from rest_framework.response         import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response         import Response
 from rest_framework.views            import APIView
+from rest_framework                  import generics
+from rest_framework.permissions      import IsAuthenticated
+from django.contrib.auth             import get_user_model
 
-from django.contrib.auth import get_user_model
+
+from .serialzers import UserSerializer
 
 User = get_user_model()
 
@@ -91,3 +95,10 @@ class KaKaoLogOutView(APIView):
         
         except KeyError:
             return Response({'message':'KEY_ERROR'},status=status.HTTP_400_BAD_REQUEST)
+        
+class UserDetailView(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+    queryset          = User.objects.all()
+    serializer_class  = UserSerializer
+    lookup_url_kwarg  = 'user_id'
+    lookup_field      = 'id'

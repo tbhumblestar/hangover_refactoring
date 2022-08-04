@@ -1,5 +1,9 @@
-from django.db import models
-from core.models import TimeStampedModel
+from django.db           import models
+from core.models         import TimeStampedModel
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -34,3 +38,19 @@ class Origin(models.Model):
     
     class Meta:
         db_table = 'origins'
+        
+
+class WishList(TimeStampedModel):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    product = models.ForeignKey("products.Product",on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.user.nickname} : {self.product.name}"
+    
+    class Meta:
+        db_table = 'wishlists'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'product'],
+                name='user_product_unique_constraint')
+        ]

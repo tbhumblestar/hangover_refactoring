@@ -6,6 +6,7 @@ from django.contrib.auth.models import (
                                 PermissionsMixin
 )
 
+
 class CustomUserManager(BaseUserManager):
     
     use_in_migrations = True
@@ -70,3 +71,5 @@ class User(AbstractBaseUser,PermissionsMixin,TimeStampedModel):
     
     class Meta:
         db_table = 'users'
+
+
