@@ -6,6 +6,7 @@ from .views      import (
                     WishlistDestroyView,
                     ReviewCreateView,
                     ReviewdetailView,
+                    ProductSearchView
                     )
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     path('<int:product_id>/wishlists',WishlistCreateView.as_view(),name='wishlist_create'),
     path('<int:product_id>/reviews',ReviewCreateView.as_view(),name='review_create'),
     path('<int:product_id>/reviews/<int:review_id>',ReviewdetailView.as_view(),name='review_delete'),
+    path('search',ProductSearchView.as_view(),name='search'),
 ]

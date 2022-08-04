@@ -18,7 +18,7 @@ class ProductSerializer(serializers.ModelSerializer):
         super().__init__(*args,**kwargs)
         
         if fields:
-            allowed = set(fields)
+            allowed  = set(fields)
             existing = set(self.fields)
             for field_name in (existing - allowed):
 
@@ -31,7 +31,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class WishlistSerializer(serializers.ModelSerializer):
     
         class Meta:
-            model = WishList
+            model   = WishList
             exclude = ['user']
 
         def create(self,validated_data):
@@ -47,14 +47,14 @@ class WishlistSerializer(serializers.ModelSerializer):
 class ReviewSerializer(serializers.ModelSerializer):
     
         class Meta:
-            model = Review
+            model   = Review
             exclude = ['user']
 
         def create(self,validated_data):
             
             check_data = {
-                "user":validated_data.get('user'),
-                "product":validated_data.get('product')
+                "user"    : validated_data.get('user'),
+                "product" : validated_data.get('product')
             }
             
             if Review.objects.filter(**check_data):

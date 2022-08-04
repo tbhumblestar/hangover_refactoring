@@ -8,6 +8,7 @@ from .models                    import (Product,
                                         Review
                                         )
 
+from rest_framework.views       import APIView
 from django.shortcuts           import get_object_or_404
 from django_filters             import rest_framework as filters
 from core.paginations           import PagePagination
@@ -28,20 +29,23 @@ class ProductListAPIView(generics.ListAPIView):
     ordering         = ['-rating','price']
     ordering_fields  = ['rating','price']
     
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-
+        
+        
         #dyanamic field filtering
         fields     = request.query_params.get('fields')
         if fields:
             fields = tuple(fields.split(','))
+        
         
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True,fields=fields)
             return self.get_paginated_response(serializer.data)
         
-        serializer = self.get_serializer(queryset, many=True,fields=fields)
+        
         return Response(serializer.data)
 
 
@@ -72,16 +76,16 @@ class WishlistDestroyView(generics.DestroyAPIView):
     permission_classes = [DetailPermissionGetOrOnlyAdminOrOnlyWriter]
     serializer_class   = WishlistSerializer
     queryset           = WishList.objects.all()
-    lookup_url_kwarg  = 'wishlist_id'
-    lookup_field      = 'id'
+    lookup_url_kwarg   = 'wishlist_id'
+    lookup_field       = 'id'
     
 
 class WishlistUserListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class   = WishlistSerializer
     queryset           = WishList.objects.all()
-    lookup_url_kwarg  = 'user_id'
-    lookup_field      = 'id'
+    lookup_url_kwarg   = 'user_id'
+    lookup_field       = 'id'
     
 
 class ReviewCreateView(generics.CreateAPIView):
@@ -109,13 +113,44 @@ class ReviewdetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [DetailPermissionGetOrOnlyAdminOrOnlyWriter]
     serializer_class   = ReviewSerializer
     queryset           = Review.objects.all()
-    lookup_url_kwarg  = 'review_id'
-    lookup_field      = 'id'
+    lookup_url_kwarg   = 'review_id'
+    lookup_field       = 'id'
     
 
 class ReviewUserListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class   = ReviewSerializer
     queryset           = Review.objects.all()
-    lookup_url_kwarg  = 'user_id'
-    lookup_field      = 'id'
+    lookup_url_kwarg   = 'user_id'
+    lookup_field       = 'id'
+    
+    
+class ProductSearchView(APIView):
+    
+    def get(self,request):
+        
+        search_keyword            = request.query_params.get('keyword')
+        print(search_keyword)
+        
+        products_searched_by_name      = Product.objects.filter(name__icontains=search_keyword)
+        products_searched_by_name_info = [
+            {
+                'id'   : product.id,
+                'name' : product.name
+            } for product in products_searched_by_name
+        ]
+        
+        products_searched_by_category      = Product.objects.filter(category__name__iexact=search_keyword)
+        products_searched_by_category_info = [
+            {
+                'id'   : product.id,
+                'name' : product.name
+            } for product in products_searched_by_category
+        ]
+    
+        searched_products={
+            "products_by_name":products_searched_by_name_info,
+            "products_by_category":products_searched_by_category_info,
+        }
+        
+        return Response(searched_products,status=status.HTTP_200_OK)
