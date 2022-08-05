@@ -42,7 +42,7 @@ class KaKaoLoginView(APIView):
     @swagger_auto_schema(
         manual_parameters     = [query_param],
         responses             = {200: KaoKaoLoginMainScheme},
-        operation_description = "get jwt token",
+        operation_description = "Check kakao_access_token valid and Give jwt_token ",
         )
     def post(self,request):
         

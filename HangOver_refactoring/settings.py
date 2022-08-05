@@ -163,3 +163,13 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'users.User'
 # AUTH_USER_MODEL = 'core.User'
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
