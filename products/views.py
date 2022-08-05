@@ -3,17 +3,21 @@ from rest_framework.filters     import OrderingFilter
 from rest_framework.response    import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework             import status
-from .models                    import (Product,
-                                        WishList,
-                                        Review
-                                        )
-
+from drf_yasg                   import openapi
+from drf_yasg.openapi           import Schema
+from drf_yasg.utils             import swagger_auto_schema
 from rest_framework.views       import APIView
 from django.shortcuts           import get_object_or_404
 from django_filters             import rest_framework as filters
 from core.paginations           import PagePagination
 from core.filters               import ProductListFilter
+from core.scheme                import ProductSearchMainScheme
+
 from core.permissions           import DetailPermissionGetOrOnlyAdminOrOnlyWriter
+from .models                    import (Product,
+                                        WishList,
+                                        Review
+                                        )
 from .serializers               import (ProductSerializer,
                                         WishlistSerializer,
                                         ReviewSerializer
@@ -126,11 +130,39 @@ class ReviewUserListView(generics.ListAPIView):
     
     
 class ProductSearchView(APIView):
+    query_param        = openapi.Parameter('keyword', openapi.IN_QUERY, required=True, pattern="?keyword=", type=openapi.TYPE_STRING,description = 'serach_keyword')
     
+    
+    products_by_name = openapi.Schema(
+        description = 'searched_products_list_by_name',
+        type = openapi.TYPE_ARRAY,
+        items=openapi.Items(type=openapi.TYPE_STRING)
+    )
+    
+    products_by_category = openapi.Schema(
+
+        description = 'searched_products_list_by_category',
+        type = openapi.TYPE_ARRAY,
+        items=openapi.Items(type=openapi.TYPE_STRING)
+    )
+    
+    response = openapi.Schema(
+        title = 'response',
+        type  = openapi.TYPE_OBJECT,
+        properties = {
+            'products_by_name':products_by_name,
+            'products_by_category':products_by_category
+        }
+    )
+    
+    @swagger_auto_schema(
+        manual_parameters     = [query_param],
+        responses             = {200: ProductSearchMainScheme},
+        operation_description = "search products by name and category",
+        )
     def get(self,request):
         
-        search_keyword            = request.query_params.get('keyword')
-        print(search_keyword)
+        search_keyword                 = request.query_params.get('keyword')
         
         products_searched_by_name      = Product.objects.filter(name__icontains=search_keyword)
         products_searched_by_name_info = [

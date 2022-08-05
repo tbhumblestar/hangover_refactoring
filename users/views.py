@@ -8,6 +8,9 @@ from rest_framework.views            import APIView
 from rest_framework                  import generics
 from rest_framework.permissions      import IsAuthenticated
 from django.contrib.auth             import get_user_model
+from drf_yasg                        import openapi
+from drf_yasg.utils                  import swagger_auto_schema
+from core.scheme                     import KaoKaoLoginMainScheme
 
 
 from .serialzers import UserSerializer
@@ -29,6 +32,18 @@ def request_kakao(token,func):
     return requests.get(kakao_url,headers=header)
 
 class KaKaoLoginView(APIView):
+    
+    query_param = openapi.Parameter('kaokao_acces_token',
+                                    openapi.IN_HEADER,
+                                    required    = True,
+                                    type        = openapi.TYPE_STRING,
+                                    description = 'kakao_access_token')
+    
+    @swagger_auto_schema(
+        manual_parameters     = [query_param],
+        responses             = {200: KaoKaoLoginMainScheme},
+        operation_description = "get jwt token",
+        )
     def post(self,request):
         
         try:

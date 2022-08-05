@@ -1,10 +1,9 @@
-from django.forms        import ValidationError
+from django.forms            import ValidationError
 from rest_framework          import serializers
 from rest_framework.response import Response
-
-from .models        import (Product,
-                            WishList,
-                            Review,
+from .models                 import (Product,
+                                    WishList,
+                                    Review,
 )
 
 class ProductSerializer(serializers.ModelSerializer):
