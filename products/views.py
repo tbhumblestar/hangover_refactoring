@@ -7,7 +7,7 @@ from drf_yasg                   import openapi
 from drf_yasg.openapi           import Schema
 from drf_yasg.utils             import swagger_auto_schema
 from rest_framework.views       import APIView
-from django.shortcuts           import get_object_or_404
+
 from django_filters             import rest_framework as filters
 from core.paginations           import PagePagination
 from core.filters               import ProductListFilter
@@ -16,7 +16,8 @@ from core.scheme                import ProductSearchMainScheme
 from core.permissions           import DetailPermissionGetOrOnlyAdminOrOnlyWriter
 from .models                    import (Product,
                                         WishList,
-                                        Review
+                                        Review,
+                                        Category
                                         )
 from .serializers               import (ProductSerializer,
                                         WishlistSerializer,
@@ -172,17 +173,17 @@ class ProductSearchView(APIView):
             } for product in products_searched_by_name
         ]
         
-        products_searched_by_category      = Product.objects.filter(category__name__iexact=search_keyword)
-        products_searched_by_category_info = [
+        searched_category      = Category.objects.filter(name__iexact=search_keyword)
+        searched_category = [
             {
-                'id'   : product.id,
-                'name' : product.name
-            } for product in products_searched_by_category
+                'id'   : category.id,
+                'name' : category.name
+            }   for category in searched_category
         ]
     
         searched_products={
-            "products_by_name":products_searched_by_name_info,
-            "products_by_category":products_searched_by_category_info,
+            "products_by_name"  :products_searched_by_name_info,
+            "searched_category" :searched_category,
         }
         
         return Response(searched_products,status=status.HTTP_200_OK)
