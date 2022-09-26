@@ -17,3 +17,5 @@ urlpatterns = [
     path('<int:user_id>/wishlists',WishlistUserListView.as_view(),name='UserWishlists'),
     path('<int:user_id>/reviews',ReviewUserListView.as_view(),name='UserReviews'),
 ]
+
+
