@@ -4,7 +4,6 @@ asttokens==2.0.5
 async-generator==1.10
 attrs==21.4.0
 backcall==0.2.0
-certifi @ file:///private/var/folders/nz/j6p8yfhx1mv_0grj5xl4650h0000gp/T/abs_884c889c-96af-444f-bd6d-daddb5e9a462ykj3l5n_/croots/recipe/certifi_1655968814730/work/certifi
 cffi==1.15.1
 charset-normalizer==2.1.0
 coreapi==2.3.3
