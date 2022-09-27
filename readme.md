@@ -4,7 +4,15 @@
 - 'VIVINO'사이트를 모티브로, 원하는 주류를 선택하고 구매한 술에 대해 리뷰를 작성할 수 있는 웹 어플리케이션
 - Hangover라는 단어에 맞추어, 도수와 숙취도를 기반으로 하는 주류 추천 및 소개 페이지
 - 기존에 만들었던 Hanover사이트의 아이디어를 가져와서 리팩토링을 진행
--
+
+<br/>
+
+### 시연영상
+https://www.youtube.com/watch?v=salXD8PgdBI
+
+<br/>
+
+[![Video Label](http://img.youtube.com/vi/salXD8PgdBI/0.jpg)](https://youtu.be/salXD8PgdBI?t=0s)
 
 <br/>
 
@@ -33,7 +41,7 @@
 - genericview를 활용한 전반적인 API 구현
 - drf_ysrg를 활용한 문서화
 - selenium을 활용한 데이터 크롤링 및 적재
-- custom user model, 자체로그인 & 소셜로그인을 활용한 인증, 인가
+- custom user model, 자체로그인 & 소셜로그인 및 DRF의 Permission을 활용한 인증, 인가
 
 <br/>
 
